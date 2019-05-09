@@ -31,7 +31,7 @@ import java.util.ArrayList;
 public class MainActivity extends AppCompatActivity {
     public ArrayList<SolarSystem> list = new ArrayList<>();
     public String Selected;
-    public static final String SPACEOBJ_NAME = "SPACEOBJ_NAME", SPACEOBJ_DISTANCE = "SPACEOBJ_DISTANCE", SPACEOBJ_RADIUS = "", SPACEOBJ_AUXDATA = "SPACEOBJ_AUXDATA";
+    public static final String SPACEOBJ_NAME = "SPACEOBJ_NAME", SPACEOBJ_DISTANCE = "SPACEOBJ_DISTANCE", SPACEOBJ_RADIUS = "SPACEOBJ_RADIUS",  SPACEOBJ_CATEGORY = "SPACEOBJ_CATEGORY",  SPACEOBJ_PARENT = "SPACEOBJ_PARENT", SPACEOBJ_AUXDATA = "SPACEOBJ_AUXDATA";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -98,33 +98,33 @@ public class MainActivity extends AppCompatActivity {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 
         String[] projection = {
-                SolarSystemReaderContract.MountainEntry.COLUMN_NAME,
-                SolarSystemReaderContract.MountainEntry.COLUMN_DISTANCE,
-                SolarSystemReaderContract.MountainEntry.COLUMN_RADIUS,
-                SolarSystemReaderContract.MountainEntry.COLUMN_PARENT,
-                SolarSystemReaderContract.MountainEntry.COLUMN_CATEGORY,
-                SolarSystemReaderContract.MountainEntry.COLUMN_AUXDATA
+                SolarSystemReaderContract.SpaceobjEntry.COLUMN_NAME,
+                SolarSystemReaderContract.SpaceobjEntry.COLUMN_DISTANCE,
+                SolarSystemReaderContract.SpaceobjEntry.COLUMN_RADIUS,
+                SolarSystemReaderContract.SpaceobjEntry.COLUMN_PARENT,
+                SolarSystemReaderContract.SpaceobjEntry.COLUMN_CATEGORY,
+                SolarSystemReaderContract.SpaceobjEntry.COLUMN_AUXDATA
         };
 
-        String sortOrder = SolarSystemReaderContract.MountainEntry.COLUMN_NAME + " ASC";
+        String sortOrder = SolarSystemReaderContract.SpaceobjEntry.COLUMN_NAME + " ASC";
 
         String whereClause = null;
         String [] whereArgs = null;
 
         if("Name A-Z".equalsIgnoreCase(Selected)) {
-            sortOrder = SolarSystemReaderContract.MountainEntry.COLUMN_NAME + " ASC";
+            sortOrder = SolarSystemReaderContract.SpaceobjEntry.COLUMN_NAME + " ASC";
         } else if("Name Z-A".equalsIgnoreCase(Selected)) {
-            sortOrder = SolarSystemReaderContract.MountainEntry.COLUMN_NAME + " DESC";
+            sortOrder = SolarSystemReaderContract.SpaceobjEntry.COLUMN_NAME + " DESC";
         } else if("Show Only Planets".equalsIgnoreCase(Selected)) {
-            whereClause = SolarSystemReaderContract.MountainEntry.COLUMN_CATEGORY+"=?";
+            whereClause = SolarSystemReaderContract.SpaceobjEntry.COLUMN_CATEGORY+"=?";
             whereArgs = new String[]{"Planet"};
         } else if("Show Only Moons".equalsIgnoreCase(Selected)) {
-            whereClause = SolarSystemReaderContract.MountainEntry.COLUMN_CATEGORY+"=?";
+            whereClause = SolarSystemReaderContract.SpaceobjEntry.COLUMN_CATEGORY+"=?";
             whereArgs = new String[]{"Moon"};
         }
 
         Cursor cursor = db.query(
-                SolarSystemReaderContract.MountainEntry.TABLE_NAME,   // The table to query
+                SolarSystemReaderContract.SpaceobjEntry.TABLE_NAME,   // The table to query
                 projection,             // The array of columns to return (pass null to get all)
                 whereClause,              // The columns for the WHERE clause
                 whereArgs,          // The values for the WHERE clause
@@ -136,12 +136,12 @@ public class MainActivity extends AppCompatActivity {
 
         while (cursor.moveToNext()) {
             SolarSystem m =  new SolarSystem(
-                    cursor.getString(cursor.getColumnIndexOrThrow(SolarSystemReaderContract.MountainEntry.COLUMN_NAME)),
-                    cursor.getString(cursor.getColumnIndexOrThrow(SolarSystemReaderContract.MountainEntry.COLUMN_DISTANCE)),
-                    cursor.getInt(cursor.getColumnIndexOrThrow(SolarSystemReaderContract.MountainEntry.COLUMN_RADIUS)),
-                    cursor.getString(cursor.getColumnIndexOrThrow(SolarSystemReaderContract.MountainEntry.COLUMN_PARENT)),
-                    cursor.getString(cursor.getColumnIndexOrThrow(SolarSystemReaderContract.MountainEntry.COLUMN_CATEGORY)),
-                    cursor.getString(cursor.getColumnIndexOrThrow(SolarSystemReaderContract.MountainEntry.COLUMN_AUXDATA))
+                    cursor.getString(cursor.getColumnIndexOrThrow(SolarSystemReaderContract.SpaceobjEntry.COLUMN_NAME)),
+                    cursor.getString(cursor.getColumnIndexOrThrow(SolarSystemReaderContract.SpaceobjEntry.COLUMN_DISTANCE)),
+                    cursor.getInt(cursor.getColumnIndexOrThrow(SolarSystemReaderContract.SpaceobjEntry.COLUMN_RADIUS)),
+                    cursor.getString(cursor.getColumnIndexOrThrow(SolarSystemReaderContract.SpaceobjEntry.COLUMN_PARENT)),
+                    cursor.getString(cursor.getColumnIndexOrThrow(SolarSystemReaderContract.SpaceobjEntry.COLUMN_CATEGORY)),
+                    cursor.getString(cursor.getColumnIndexOrThrow(SolarSystemReaderContract.SpaceobjEntry.COLUMN_AUXDATA))
             );
 
             list.add(m);
@@ -221,13 +221,13 @@ public class MainActivity extends AppCompatActivity {
                         JSONObject object = (JSONObject) jsonArray.get(i);
 
                         ContentValues values = new ContentValues();
-                        values.put(SolarSystemReaderContract.MountainEntry.COLUMN_NAME, object.getString("name"));
-                        values.put(SolarSystemReaderContract.MountainEntry.COLUMN_DISTANCE, object.getString("location"));
-                        values.put(SolarSystemReaderContract.MountainEntry.COLUMN_RADIUS, object.getInt("size"));
-                        values.put(SolarSystemReaderContract.MountainEntry.COLUMN_PARENT, object.getString("company"));
-                        values.put(SolarSystemReaderContract.MountainEntry.COLUMN_CATEGORY, object.getString("category"));
-                        values.put(SolarSystemReaderContract.MountainEntry.COLUMN_AUXDATA, object.getString("auxdata"));
-                        db.insert(SolarSystemReaderContract.MountainEntry.TABLE_NAME, null, values);
+                        values.put(SolarSystemReaderContract.SpaceobjEntry.COLUMN_NAME, object.getString("name"));
+                        values.put(SolarSystemReaderContract.SpaceobjEntry.COLUMN_DISTANCE, object.getString("location"));
+                        values.put(SolarSystemReaderContract.SpaceobjEntry.COLUMN_RADIUS, object.getInt("size"));
+                        values.put(SolarSystemReaderContract.SpaceobjEntry.COLUMN_PARENT, object.getString("company"));
+                        values.put(SolarSystemReaderContract.SpaceobjEntry.COLUMN_CATEGORY, object.getString("category"));
+                        values.put(SolarSystemReaderContract.SpaceobjEntry.COLUMN_AUXDATA, object.getString("auxdata"));
+                        db.insert(SolarSystemReaderContract.SpaceobjEntry.TABLE_NAME, null, values);
 
                         //TODO: Pass Moons to plantes so that we can group them..
 
@@ -259,6 +259,8 @@ public class MainActivity extends AppCompatActivity {
                     myIntent.putExtra(SPACEOBJ_NAME, list.get(position).toString());
                     myIntent.putExtra(SPACEOBJ_DISTANCE, list.get(position).getDistance());
                     myIntent.putExtra(SPACEOBJ_RADIUS, list.get(position).getRadius());
+                    myIntent.putExtra(SPACEOBJ_CATEGORY, list.get(position).getCategory());
+                    myIntent.putExtra(SPACEOBJ_PARENT, list.get(position).getParent());
                     myIntent.putExtra(SPACEOBJ_AUXDATA, list.get(position).getAuxdata());
                     startActivity(myIntent);
                 }

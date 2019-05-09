@@ -17,7 +17,7 @@ public class WebViewActivity extends AppCompatActivity {
 
         //Ta emot allt som blev skickat ifrån MainActivity
         Intent intent = getIntent();
-        String url = intent.getStringExtra(SolarSystemDetailsActivity.MOUNTAIN_URL);
+        String url = intent.getStringExtra(SolarSystemDetailsActivity.SPACEOBJ_URL);
 
         setTitle(url); //url används som titel för denna webview
         visaWebbSida(url);

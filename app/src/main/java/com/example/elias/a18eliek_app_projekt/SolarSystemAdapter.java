@@ -25,7 +25,7 @@ public class SolarSystemAdapter extends ArrayAdapter<SolarSystem> {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         View listItemView = convertView;
-        String mountainIMG = "";
+        String spaceobjIMG = "";
 
         if(listItemView == null) {
             listItemView = LayoutInflater.from(getContext()).inflate(R.layout.list_item, parent, false);
@@ -42,13 +42,13 @@ public class SolarSystemAdapter extends ArrayAdapter<SolarSystem> {
         numberTextView.setText(currentSolarSystem.info());
 
         try {
-            mountainIMG = SolarSystem.splitAuxdata(currentSolarSystem.getAuxdata(), "img");
+            spaceobjIMG = SolarSystem.splitAuxdata(currentSolarSystem.getAuxdata(), "img");
         } catch (JSONException e) {
             e.printStackTrace();
         }
 
         //Ladda ner och visa bilden
-        new DownloadImageTask((ImageView) listItemView.findViewById(R.id.list_item_icon)).execute(mountainIMG);
+        new DownloadImageTask((ImageView) listItemView.findViewById(R.id.list_item_icon)).execute(spaceobjIMG);
 
         return listItemView;
     }

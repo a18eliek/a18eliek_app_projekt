@@ -2,6 +2,8 @@ package com.example.elias.a18eliek_app_projekt;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+import java.text.NumberFormat;
+import java.util.Locale;
 
 public class SolarSystem {
     //Member variabels
@@ -20,12 +22,6 @@ public class SolarSystem {
         auxdata = inAuxdata;
         parent = inParent;
         category = inCategory;
-    }
-
-    public SolarSystem(int orThrow, int indexOrThrow, int columnIndexOrThrow, String inName) {
-        name = inName;
-        distance = "";
-        radius = -1;
     }
 
     //Member methods
@@ -65,9 +61,33 @@ public class SolarSystem {
         return auxdata;
     }
 
+    public String getCategory() {
+        return category;
+    }
+
+    public String getParent() {
+        return parent;
+    }
+
     public static String splitAuxdata(String auxdata, String value) throws JSONException {
         JSONObject json = new JSONObject(auxdata);
         return json.getString(value);
+    }
+
+
+    /**
+     * Returnera ett formaterat nummer, speciellt bra för stora siffror.
+     * Anväder Locale.GERMAN för att separera med punkter istället för kommatecken.
+     * @param number
+     * @return string
+     */
+    public static String getFormattedNumber(String number){
+        if(!number.isEmpty()) {
+            double val = Double.parseDouble(number);
+            return NumberFormat.getNumberInstance(Locale.GERMAN).format(val);
+        }else{
+            return "0";
+        }
     }
 
 }

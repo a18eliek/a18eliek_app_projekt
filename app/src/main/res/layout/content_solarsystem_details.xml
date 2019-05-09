@@ -19,22 +19,23 @@
             tools:layout_editor_absoluteX="8dp"
             tools:layout_editor_absoluteY="7dp" >
             <ImageView
-                android:id="@+id/MountainImageView"
+                android:id="@+id/SpaceobjImageView"
                 android:layout_width="344dp"
                 android:layout_height="194dp"
                 android:scaleType="centerCrop" />
 
             <TextView
-                android:id="@+id/MOUNTAIN_NAME"
+                android:id="@+id/SPACEOBJ_NAME"
                 android:layout_width="match_parent"
                 android:layout_height="44dp"
                 android:textAlignment="viewStart"
                 android:layout_marginTop="200dp"
                 android:paddingLeft="16dp"
-                android:textSize="24dp" />
+                android:textSize="24dp"
+                android:gravity="start" />
 
             <TextView
-                android:id="@+id/MOUNTAIN_LOCATION"
+                android:id="@+id/SPACEOBJ_DISTANCE"
                 android:layout_marginTop="224dp"
                 android:padding="16dp"
                 android:layout_width="match_parent"
@@ -42,7 +43,7 @@
                 android:textSize="14dp" />
 
             <TextView
-                android:id="@+id/MOUNTAIN_HEIGHT"
+                android:id="@+id/SPACEOBJ_RADIUS"
                 android:layout_marginTop="248dp"
                 android:padding="16dp"
                 android:layout_width="match_parent"
@@ -56,12 +57,12 @@
                 android:padding="16dp">
 
                 <Button
-                    android:id="@+id/MOUNTAIN_LINK"
+                    android:id="@+id/SPACEOBJ_LINK"
                     android:layout_width="wrap_content"
                     android:layout_height="36dp"
                     android:elevation="0dp"
                     android:minWidth="64dp"
-                    android:onClick="openMountainLink"
+                    android:onClick="openSpaceobjLink"
                     android:text="Mer information >"
                     android:textAlignment="center"
                     android:textSize="14dp" />

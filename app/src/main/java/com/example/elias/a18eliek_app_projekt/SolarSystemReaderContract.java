@@ -9,8 +9,8 @@ public class SolarSystemReaderContract {
     private SolarSystemReaderContract() {}
 
     // Inner class that defines the SolarSystem table contents
-    public static class MountainEntry implements BaseColumns {
-        public static final String TABLE_NAME = "mountains";
+    public static class SpaceobjEntry implements BaseColumns {
+        public static final String TABLE_NAME = "SpaceObjects";
         public static final String COLUMN_NAME = "name";
         public static final String COLUMN_DISTANCE = "distance";
         public static final String COLUMN_RADIUS = "radius";
@@ -20,16 +20,16 @@ public class SolarSystemReaderContract {
     }
 
     public static final String SQL_CREATE  =
-            "CREATE TABLE " + MountainEntry.TABLE_NAME + " (" +
-                    MountainEntry._ID + "INTEGER PRIMARY KEY, " +
-                    MountainEntry.COLUMN_NAME + " TEXT," +
-                    MountainEntry.COLUMN_DISTANCE + " TEXT," +
-                    MountainEntry.COLUMN_RADIUS  + " TEXT," +
-                    MountainEntry.COLUMN_PARENT  + " TEXT," +
-                    MountainEntry.COLUMN_CATEGORY  + " TEXT," +
-                    MountainEntry.COLUMN_AUXDATA + " TEXT)";
+            "CREATE TABLE " + SpaceobjEntry.TABLE_NAME + " (" +
+                    SpaceobjEntry._ID + "INTEGER PRIMARY KEY, " +
+                    SpaceobjEntry.COLUMN_NAME + " TEXT," +
+                    SpaceobjEntry.COLUMN_DISTANCE + " TEXT," +
+                    SpaceobjEntry.COLUMN_RADIUS  + " TEXT," +
+                    SpaceobjEntry.COLUMN_PARENT  + " TEXT," +
+                    SpaceobjEntry.COLUMN_CATEGORY  + " TEXT," +
+                    SpaceobjEntry.COLUMN_AUXDATA + " TEXT)";
 
     public static final String SQL_DELETE_ENTRIES =
-            "DROP TABLE IF EXISTS " + MountainEntry.TABLE_NAME;
+            "DROP TABLE IF EXISTS " + SpaceobjEntry.TABLE_NAME;
 
 }
