@@ -12,7 +12,6 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 import org.json.JSONException;
-
 import java.io.InputStream;
 import java.util.ArrayList;
 

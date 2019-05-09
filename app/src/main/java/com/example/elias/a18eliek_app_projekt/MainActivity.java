@@ -1,6 +1,7 @@
 package com.example.elias.a18eliek_app_projekt;
 
 import android.content.ContentValues;
+import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.AsyncTask;
@@ -30,6 +31,7 @@ import java.util.ArrayList;
 public class MainActivity extends AppCompatActivity {
     public ArrayList<SolarSystem> list = new ArrayList<>();
     public String Selected;
+    public static final String SPACEOBJ_NAME = "SPACEOBJ_NAME", SPACEOBJ_DISTANCE = "SPACEOBJ_DISTANCE", SPACEOBJ_RADIUS = "", SPACEOBJ_AUXDATA = "SPACEOBJ_AUXDATA";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -246,6 +248,19 @@ public class MainActivity extends AppCompatActivity {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                     Toast.makeText(getApplicationContext(), list.get(position).info(), Toast.LENGTH_SHORT).show();
+                }
+            });
+
+            //Skicka all information vid klick till vår intent
+            listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                    Intent myIntent = new Intent(view.getContext(), SolarSystemDetailsActivity.class);
+                    myIntent.putExtra(SPACEOBJ_NAME, list.get(position).toString());
+                    myIntent.putExtra(SPACEOBJ_DISTANCE, list.get(position).getDistance());
+                    myIntent.putExtra(SPACEOBJ_RADIUS, list.get(position).getRadius());
+                    myIntent.putExtra(SPACEOBJ_AUXDATA, list.get(position).getAuxdata());
+                    startActivity(myIntent);
                 }
             });
 
