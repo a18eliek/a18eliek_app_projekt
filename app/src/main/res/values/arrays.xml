@@ -3,7 +3,7 @@
     <string-array name="sort_arrays">
         <item>Name A-Z</item>
         <item>Name Z-A</item>
-        <item>Height Highest-Lowest</item>
-        <item>Height Lowest-Highest</item>
+        <item>Show Only Planets</item>
+        <item>Show Only Moons</item>
     </string-array>
 </resources>

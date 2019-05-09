@@ -17,10 +17,10 @@ import java.io.InputStream;
 import java.util.ArrayList;
 
 
-public class MountainAdapter extends ArrayAdapter<Mountain> {
+public class SolarSystemAdapter extends ArrayAdapter<SolarSystem> {
 
-    public MountainAdapter(Context context, ArrayList<Mountain> mountainList) {
-        super(context, 0, mountainList);
+    public SolarSystemAdapter(Context context, ArrayList<SolarSystem> solarSystemList) {
+        super(context, 0, solarSystemList);
     }
 
     @Override
@@ -32,18 +32,18 @@ public class MountainAdapter extends ArrayAdapter<Mountain> {
             listItemView = LayoutInflater.from(getContext()).inflate(R.layout.list_item, parent, false);
         }
 
-        Mountain currentMountain = getItem(position);
+        SolarSystem currentSolarSystem = getItem(position);
 
         //Skriv ut namnet på berget
         TextView nameTextView = listItemView.findViewById(R.id.mountName);
-        nameTextView.setText(currentMountain.toString());
+        nameTextView.setText(currentSolarSystem.toString());
 
         //Skriv ut information om berget
         TextView numberTextView = listItemView.findViewById(R.id.mountInfo);
-        numberTextView.setText(currentMountain.info());
+        numberTextView.setText(currentSolarSystem.info());
 
         try {
-            mountainIMG = Mountain.splitAuxdata(currentMountain.getAuxdata(), "img");
+            mountainIMG = SolarSystem.splitAuxdata(currentSolarSystem.getAuxdata(), "img");
         } catch (JSONException e) {
             e.printStackTrace();
         }

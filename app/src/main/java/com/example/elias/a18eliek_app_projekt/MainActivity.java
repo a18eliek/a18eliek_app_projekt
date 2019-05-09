@@ -25,8 +25,10 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
 
+//TODO: Add everything after Reah from https://en.wikipedia.org/wiki/Solar_System
+
 public class MainActivity extends AppCompatActivity {
-    public ArrayList<Mountain> list = new ArrayList<>();
+    public ArrayList<SolarSystem> list = new ArrayList<>();
     public String Selected;
 
     @Override
@@ -42,9 +44,9 @@ public class MainActivity extends AppCompatActivity {
             public void onItemSelected(AdapterView<?> arg0, View arg1, int pos, long arg3) {
                 Selected = arg0.getSelectedItem().toString();
 
-                MountainAdapter mountainAdapter = new MountainAdapter(getApplicationContext(), printFromDB());
+                SolarSystemAdapter solarSystemAdapter = new SolarSystemAdapter(getApplicationContext(), printFromDB());
                 ListView listView = findViewById(R.id.my_listview);
-                listView.setAdapter(mountainAdapter);
+                listView.setAdapter(solarSystemAdapter);
 
                 Log.e("brom", Selected);
 
@@ -74,10 +76,10 @@ public class MainActivity extends AppCompatActivity {
         }
 
         if(id == R.id.action_dropdb) {
-            MountainReaderDbHelper dbHelper = new MountainReaderDbHelper(getApplicationContext());
+            SolarSystemReaderDbHelper dbHelper = new SolarSystemReaderDbHelper(getApplicationContext());
             SQLiteDatabase db = dbHelper.getWritableDatabase();
-            db.execSQL(MountainReaderContract.SQL_DELETE_ENTRIES);
-            db.execSQL(MountainReaderContract.SQL_CREATE); //App will crash if we don't have a database so let's create it.
+            db.execSQL(SolarSystemReaderContract.SQL_DELETE_ENTRIES);
+            db.execSQL(SolarSystemReaderContract.SQL_CREATE); //App will crash if we don't have a database so let's create it.
 
             Toast.makeText(getApplicationContext(), "Dropping DB...", Toast.LENGTH_SHORT).show();
             return true;
@@ -88,35 +90,42 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-    public ArrayList<Mountain> printFromDB() {
+    public ArrayList<SolarSystem> printFromDB() {
         list.clear();
-        MountainReaderDbHelper dbHelper = new MountainReaderDbHelper(getApplicationContext());
+        SolarSystemReaderDbHelper dbHelper = new SolarSystemReaderDbHelper(getApplicationContext());
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 
         String[] projection = {
-                MountainReaderContract.MountainEntry.COLUMN_NAME,
-                MountainReaderContract.MountainEntry.COLUMN_LOCATION,
-                MountainReaderContract.MountainEntry.COLUMN_HEIGHT,
-                MountainReaderContract.MountainEntry.COLUMN_AUXDATA
+                SolarSystemReaderContract.MountainEntry.COLUMN_NAME,
+                SolarSystemReaderContract.MountainEntry.COLUMN_DISTANCE,
+                SolarSystemReaderContract.MountainEntry.COLUMN_RADIUS,
+                SolarSystemReaderContract.MountainEntry.COLUMN_PARENT,
+                SolarSystemReaderContract.MountainEntry.COLUMN_CATEGORY,
+                SolarSystemReaderContract.MountainEntry.COLUMN_AUXDATA
         };
 
-        String sortOrder = MountainReaderContract.MountainEntry.COLUMN_NAME + " ASC";
+        String sortOrder = SolarSystemReaderContract.MountainEntry.COLUMN_NAME + " ASC";
+
+        String whereClause = null;
+        String [] whereArgs = null;
 
         if("Name A-Z".equalsIgnoreCase(Selected)) {
-            sortOrder = MountainReaderContract.MountainEntry.COLUMN_NAME + " ASC";
+            sortOrder = SolarSystemReaderContract.MountainEntry.COLUMN_NAME + " ASC";
         } else if("Name Z-A".equalsIgnoreCase(Selected)) {
-            sortOrder = MountainReaderContract.MountainEntry.COLUMN_NAME + " DESC";
-        } else if("Height Highest-Lowest".equalsIgnoreCase(Selected)) {
-            sortOrder = MountainReaderContract.MountainEntry.COLUMN_HEIGHT + " DESC";
-        } else if("Height Lowest-Highest".equalsIgnoreCase(Selected)) {
-            sortOrder = MountainReaderContract.MountainEntry.COLUMN_HEIGHT + " ASC";
+            sortOrder = SolarSystemReaderContract.MountainEntry.COLUMN_NAME + " DESC";
+        } else if("Show Only Planets".equalsIgnoreCase(Selected)) {
+            whereClause = SolarSystemReaderContract.MountainEntry.COLUMN_CATEGORY+"=?";
+            whereArgs = new String[]{"Planet"};
+        } else if("Show Only Moons".equalsIgnoreCase(Selected)) {
+            whereClause = SolarSystemReaderContract.MountainEntry.COLUMN_CATEGORY+"=?";
+            whereArgs = new String[]{"Moon"};
         }
 
         Cursor cursor = db.query(
-                MountainReaderContract.MountainEntry.TABLE_NAME,   // The table to query
+                SolarSystemReaderContract.MountainEntry.TABLE_NAME,   // The table to query
                 projection,             // The array of columns to return (pass null to get all)
-                null,              // The columns for the WHERE clause
-                null,          // The values for the WHERE clause
+                whereClause,              // The columns for the WHERE clause
+                whereArgs,          // The values for the WHERE clause
                 null,                   // don't group the rows
                 null,                   // don't filter by row groups
                 sortOrder               // The sort order
@@ -124,10 +133,13 @@ public class MainActivity extends AppCompatActivity {
 
 
         while (cursor.moveToNext()) {
-            Mountain m =  new Mountain(cursor.getString(cursor.getColumnIndexOrThrow(MountainReaderContract.MountainEntry.COLUMN_NAME)),
-                    cursor.getString(cursor.getColumnIndexOrThrow(MountainReaderContract.MountainEntry.COLUMN_LOCATION)),
-                    cursor.getInt(cursor.getColumnIndexOrThrow(MountainReaderContract.MountainEntry.COLUMN_HEIGHT)),
-                    cursor.getString(cursor.getColumnIndexOrThrow(MountainReaderContract.MountainEntry.COLUMN_AUXDATA))
+            SolarSystem m =  new SolarSystem(
+                    cursor.getString(cursor.getColumnIndexOrThrow(SolarSystemReaderContract.MountainEntry.COLUMN_NAME)),
+                    cursor.getString(cursor.getColumnIndexOrThrow(SolarSystemReaderContract.MountainEntry.COLUMN_DISTANCE)),
+                    cursor.getInt(cursor.getColumnIndexOrThrow(SolarSystemReaderContract.MountainEntry.COLUMN_RADIUS)),
+                    cursor.getString(cursor.getColumnIndexOrThrow(SolarSystemReaderContract.MountainEntry.COLUMN_PARENT)),
+                    cursor.getString(cursor.getColumnIndexOrThrow(SolarSystemReaderContract.MountainEntry.COLUMN_CATEGORY)),
+                    cursor.getString(cursor.getColumnIndexOrThrow(SolarSystemReaderContract.MountainEntry.COLUMN_AUXDATA))
             );
 
             list.add(m);
@@ -147,7 +159,7 @@ public class MainActivity extends AppCompatActivity {
             String jsonStr = null;
 
             try {
-                URL url = new URL("http://wwwlab.iit.his.se/brom/kurser/mobilprog/dbservice/admin/getdataasjson.php?type=brom");
+                URL url = new URL("http://wwwlab.iit.his.se/brom/kurser/mobilprog/dbservice/admin/getdataasjson.php?type=a18eliek");
 
                 // Create the request to the PHP-service, and open the connection
                 urlConnection = (HttpURLConnection) url.openConnection();
@@ -196,34 +208,38 @@ public class MainActivity extends AppCompatActivity {
             try {
                 if (o != null) {
                     //Har vi data så kan vi tömma databasen och fylla på med den nya.
-                    MountainReaderDbHelper dbHelper = new MountainReaderDbHelper(getApplicationContext());
+                    SolarSystemReaderDbHelper dbHelper = new SolarSystemReaderDbHelper(getApplicationContext());
                     SQLiteDatabase db = dbHelper.getWritableDatabase();
 
-                    db.execSQL(MountainReaderContract.SQL_DELETE_ENTRIES);
-                    db.execSQL(MountainReaderContract.SQL_CREATE);
+                    db.execSQL(SolarSystemReaderContract.SQL_DELETE_ENTRIES);
+                    db.execSQL(SolarSystemReaderContract.SQL_CREATE);
 
                     JSONArray jsonArray = new JSONArray(o);
                     for (int i = 0; i < jsonArray.length(); i++) {
                         JSONObject object = (JSONObject) jsonArray.get(i);
 
                         ContentValues values = new ContentValues();
-                        values.put(MountainReaderContract.MountainEntry.COLUMN_NAME, object.getString("name"));
-                        values.put(MountainReaderContract.MountainEntry.COLUMN_LOCATION, object.getString("location"));
-                        values.put(MountainReaderContract.MountainEntry.COLUMN_HEIGHT, object.getInt("size"));
-                        values.put(MountainReaderContract.MountainEntry.COLUMN_AUXDATA, object.getString("auxdata"));
-                        db.insert(MountainReaderContract.MountainEntry.TABLE_NAME, null, values);
+                        values.put(SolarSystemReaderContract.MountainEntry.COLUMN_NAME, object.getString("name"));
+                        values.put(SolarSystemReaderContract.MountainEntry.COLUMN_DISTANCE, object.getString("location"));
+                        values.put(SolarSystemReaderContract.MountainEntry.COLUMN_RADIUS, object.getInt("size"));
+                        values.put(SolarSystemReaderContract.MountainEntry.COLUMN_PARENT, object.getString("company"));
+                        values.put(SolarSystemReaderContract.MountainEntry.COLUMN_CATEGORY, object.getString("category"));
+                        values.put(SolarSystemReaderContract.MountainEntry.COLUMN_AUXDATA, object.getString("auxdata"));
+                        db.insert(SolarSystemReaderContract.MountainEntry.TABLE_NAME, null, values);
 
-                        Log.e("brom","MountainReaderContract:"+values);
+                        //TODO: Pass Moons to plantes so that we can group them..
+
+                        Log.e("brom","SolarSystemReaderContract:"+values);
                     }
                 }
             } catch (JSONException e) {
                 Log.e("brom","E:"+e.getMessage());
             }
 
-            //Skicka bergen till vår MountainAdapter
-            MountainAdapter mountainAdapter = new MountainAdapter(getApplicationContext(), printFromDB());
+            //Skicka bergen till vår SolarSystemAdapter
+            SolarSystemAdapter solarSystemAdapter = new SolarSystemAdapter(getApplicationContext(), printFromDB());
             ListView listView = findViewById(R.id.my_listview);
-            listView.setAdapter(mountainAdapter);
+            listView.setAdapter(solarSystemAdapter);
 
             //Lägger in en Toast vid klick på ett berg namn. Plats och namn visas.
             listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
