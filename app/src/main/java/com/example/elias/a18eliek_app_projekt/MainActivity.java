@@ -106,7 +106,7 @@ public class MainActivity extends AppCompatActivity {
                 SolarSystemReaderContract.SpaceobjEntry.COLUMN_AUXDATA
         };
 
-        String sortOrder = SolarSystemReaderContract.SpaceobjEntry.COLUMN_NAME + " ASC";
+        String sortOrder = "";
 
         String whereClause = null;
         String [] whereArgs = null;
@@ -121,7 +121,16 @@ public class MainActivity extends AppCompatActivity {
         } else if("Show Only Moons".equalsIgnoreCase(Selected)) {
             whereClause = SolarSystemReaderContract.SpaceobjEntry.COLUMN_CATEGORY+"=?";
             whereArgs = new String[]{"Moon"};
+        } else if("Closest to the Sun".equalsIgnoreCase(Selected)) {
+            whereClause = SolarSystemReaderContract.SpaceobjEntry.COLUMN_CATEGORY+"=?";
+            sortOrder += SolarSystemReaderContract.SpaceobjEntry.COLUMN_DISTANCE + " ASC";
+            whereArgs = new String[]{"Planet"};
+        } else if("Furthest away from the Sun".equalsIgnoreCase(Selected)) {
+            whereClause = SolarSystemReaderContract.SpaceobjEntry.COLUMN_CATEGORY+"=?";
+            sortOrder = SolarSystemReaderContract.SpaceobjEntry.COLUMN_DISTANCE + " DESC";
+            whereArgs = new String[]{"Planet"};
         }
+
 
         Cursor cursor = db.query(
                 SolarSystemReaderContract.SpaceobjEntry.TABLE_NAME,   // The table to query
@@ -161,7 +170,7 @@ public class MainActivity extends AppCompatActivity {
             String jsonStr = null;
 
             try {
-                URL url = new URL("http://wwwlab.iit.his.se/brom/kurser/mobilprog/dbservice/admin/getdataasjson.php?type=a18eliek");
+                URL url = new URL("https://wwwlab.iit.his.se/brom/kurser/mobilprog/dbservice/admin/getdataasjson.php?type=a18eliek");
 
                 // Create the request to the PHP-service, and open the connection
                 urlConnection = (HttpURLConnection) url.openConnection();

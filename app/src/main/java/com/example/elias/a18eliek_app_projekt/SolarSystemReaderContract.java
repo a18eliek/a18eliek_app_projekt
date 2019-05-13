@@ -23,7 +23,7 @@ public class SolarSystemReaderContract {
             "CREATE TABLE " + SpaceobjEntry.TABLE_NAME + " (" +
                     SpaceobjEntry._ID + "INTEGER PRIMARY KEY, " +
                     SpaceobjEntry.COLUMN_NAME + " TEXT," +
-                    SpaceobjEntry.COLUMN_DISTANCE + " TEXT," +
+                    SpaceobjEntry.COLUMN_DISTANCE + " INT," +
                     SpaceobjEntry.COLUMN_RADIUS  + " TEXT," +
                     SpaceobjEntry.COLUMN_PARENT  + " TEXT," +
                     SpaceobjEntry.COLUMN_CATEGORY  + " TEXT," +

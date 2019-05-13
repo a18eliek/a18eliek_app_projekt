@@ -2,7 +2,7 @@
     <string name="app_name">a18eliek_app_projekt</string>
     <string name="spinner_title">Spinner</string>
     <string name="sort_prompt">Sort</string>
-    <string name="refresh">Fetch mountains</string>
+    <string name="refresh">Fetch Objects</string>
     <string name="drop_db">Drop database</string>
     <string name="title_activity_solarsystem_details">Solar System Details</string>
 </resources>

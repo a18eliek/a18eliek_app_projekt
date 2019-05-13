@@ -32,7 +32,7 @@ public class SolarSystem {
     public String info() {
         String str = name;
         str += " is located ";
-        str += distance;
+        str += getFormattedNumber(distance);
 
         if("Moon".equalsIgnoreCase(category)){
             str += " km away from " + parent + " and has a radius of ";
@@ -40,7 +40,7 @@ public class SolarSystem {
             str += " km away from the sun and has a radius of ";
         }
 
-        str += Integer.toString(radius);
+        str += getFormattedNumber(Integer.toString(radius));
         str += "km. ";
         return str;
     }

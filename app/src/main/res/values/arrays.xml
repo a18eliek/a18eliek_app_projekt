@@ -5,5 +5,7 @@
         <item>Name Z-A</item>
         <item>Show Only Planets</item>
         <item>Show Only Moons</item>
+        <item>Closest to the Sun</item>
+        <item>Furthest away from the Sun</item>
     </string-array>
 </resources>
