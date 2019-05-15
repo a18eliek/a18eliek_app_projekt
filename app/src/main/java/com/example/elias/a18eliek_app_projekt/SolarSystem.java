@@ -6,13 +6,14 @@ import java.text.NumberFormat;
 import java.util.Locale;
 
 public class SolarSystem {
-    private String parent;
+
     //Member variabels
     private String name;
     private String distance;
     private int radius;
     private String auxdata;
     private String category;
+    private String parent;
 
     //Constructor(s)
     public SolarSystem(String inName, String inDistance, int inRadius, String inParent, String inCategory, String inAuxdata) {

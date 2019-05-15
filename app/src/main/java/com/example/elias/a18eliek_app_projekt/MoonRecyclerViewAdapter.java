@@ -3,7 +3,6 @@ package com.example.elias.a18eliek_app_projekt;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,6 +19,7 @@ public class MoonRecyclerViewAdapter extends RecyclerView.Adapter<MoonRecyclerVi
     private List<String> mMoonDistance;
     private LayoutInflater mInflater;
     private ItemClickListener mClickListener;
+    public View view;
 
     // data is passed into the constructor
     MoonRecyclerViewAdapter(Context context, ArrayList<String> auxdata, List<String> name, List<String> distance) {
@@ -66,6 +66,7 @@ public class MoonRecyclerViewAdapter extends RecyclerView.Adapter<MoonRecyclerVi
 
     // stores and recycles views as they are scrolled off screen
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+
         ImageView moonImageView;
         TextView moonTextView;
         TextView moonDistanceTextView;
@@ -80,20 +81,28 @@ public class MoonRecyclerViewAdapter extends RecyclerView.Adapter<MoonRecyclerVi
 
         @Override
         public void onClick(View view) {
-            if (mClickListener != null) {
-                Log.e("onClick", "ehhee");
-                mClickListener.onItemClick(view, getAdapterPosition());
-            }
+            if (mClickListener != null) mClickListener.onItemClick(view, getAdapterPosition());
         }
     }
 
     // convenience method for getting data at click position
-    public String getItem(int id) {
+    String getMoonName(int id) {
         return mMoonName.get(id);
+    }
+
+    String getMoonDistance(int id) {
+        return mMoonDistance.get(id);
+    }
+
+    // allows clicks events to be caught
+    void setClickListener(ItemClickListener itemClickListener) {
+        this.mClickListener = itemClickListener;
     }
 
     // parent activity will implement this method to respond to click events
     public interface ItemClickListener {
         void onItemClick(View view, int position);
     }
+
+
 }

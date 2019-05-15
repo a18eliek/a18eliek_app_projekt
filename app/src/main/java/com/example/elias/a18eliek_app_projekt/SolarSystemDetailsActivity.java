@@ -14,20 +14,15 @@ import android.text.Spanned;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import org.json.JSONException;
-
 import java.util.ArrayList;
-import java.util.Vector;
-
 import static com.example.elias.a18eliek_app_projekt.SolarSystem.getFormattedNumber;
 
-public class SolarSystemDetailsActivity extends AppCompatActivity {
+public class SolarSystemDetailsActivity extends AppCompatActivity implements MoonRecyclerViewAdapter.ItemClickListener{
     ImageView image;
     Menu optionsMenu;
     String URL = "";
@@ -36,6 +31,7 @@ public class SolarSystemDetailsActivity extends AppCompatActivity {
     public static ArrayList<String> MoonImgs = new ArrayList<>();
     public static ArrayList<String> MoonDistance = new ArrayList<>();
     private MoonRecyclerViewAdapter adapter;
+    public String spaceobjName;
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
@@ -45,13 +41,12 @@ public class SolarSystemDetailsActivity extends AppCompatActivity {
 
         //Ta emot allt som blev skickat ifrån MainActivity
         Intent intent = getIntent();
-        String spaceobjName = intent.getStringExtra(MainActivity.SPACEOBJ_NAME);
+        spaceobjName = intent.getStringExtra(MainActivity.SPACEOBJ_NAME);
         String spaceobjDistance = intent.getStringExtra(MainActivity.SPACEOBJ_DISTANCE);
         String spaceobjRadius = intent.getStringExtra(MainActivity.SPACEOBJ_RADIUS);
         String spaceobjCategory = intent.getStringExtra(MainActivity.SPACEOBJ_CATEGORY);
         String spaceobjParent = intent.getStringExtra(MainActivity.SPACEOBJ_PARENT);
         String spaceobjAuxdata = intent.getStringExtra(MainActivity.SPACEOBJ_AUXDATA);
-Log.e("spaceobjParent", spaceobjParent);
 
         String spaceobjURL = "", spaceobjIMG = "";
 
@@ -107,9 +102,8 @@ Log.e("spaceobjParent", spaceobjParent);
         //Visa bild
         new SolarSystemAdapter.DownloadImageTask((ImageView) findViewById(R.id.SpaceobjImageView)).execute(spaceobjIMG);
 
-
         //Hantera månar
-       // if(spaceobjParent != "") {
+        if(spaceobjParent != "") {
             SolarSystemReaderDbHelper dbHelper = new SolarSystemReaderDbHelper(getApplicationContext());
             SQLiteDatabase db = dbHelper.getWritableDatabase();
 
@@ -153,19 +147,19 @@ Log.e("spaceobjParent", spaceobjParent);
             cursor.close();
 
             // Visa månar som RecyclerView
-            RecyclerView recyclerView = findViewById(R.id.rvAnimals);
+            RecyclerView recyclerView = findViewById(R.id.rvMoons);
             LinearLayoutManager horizontalLayoutManager
                     = new LinearLayoutManager(SolarSystemDetailsActivity.this, LinearLayoutManager.HORIZONTAL, false);
             recyclerView.setLayoutManager(horizontalLayoutManager);
             adapter = new MoonRecyclerViewAdapter(this, MoonImgs, MoonList, MoonDistance);
-
+            adapter.setClickListener(this);
             recyclerView.setAdapter(adapter);
-        //}
-
+        }
     }
 
+    @Override
     public void onItemClick(View view, int position) {
-        Toast.makeText(this, "You clicked " + adapter.getItem(position) + " on item position " + position, Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, adapter.getMoonName(position) + " is in orbit "+ adapter.getMoonDistance(position) + " km away from " + spaceobjName, Toast.LENGTH_SHORT).show();
     }
 
     // create an action bar button
