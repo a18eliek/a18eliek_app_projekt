@@ -53,7 +53,6 @@ public class SolarSystemAdapter extends ArrayAdapter<SolarSystem> {
         return listItemView;
     }
 
-
     //Ladda bilder ifrån en URL
     //Tagen ifrån https://stackoverflow.com/a/9288544/3822307
     static class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {

@@ -4,9 +4,12 @@ import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Color;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -29,10 +32,10 @@ import java.util.ArrayList;
 //TODO: Add everything after Reah from https://en.wikipedia.org/wiki/Solar_System
 
 public class MainActivity extends AppCompatActivity {
-    public ArrayList<SolarSystem> list = new ArrayList<>();
+    public static ArrayList<SolarSystem> list = new ArrayList<>();
     public String Selected;
     public static final String SPACEOBJ_NAME = "SPACEOBJ_NAME", SPACEOBJ_DISTANCE = "SPACEOBJ_DISTANCE", SPACEOBJ_RADIUS = "SPACEOBJ_RADIUS",  SPACEOBJ_CATEGORY = "SPACEOBJ_CATEGORY",  SPACEOBJ_PARENT = "SPACEOBJ_PARENT", SPACEOBJ_AUXDATA = "SPACEOBJ_AUXDATA";
-
+    
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -57,6 +60,8 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onNothingSelected(AdapterView<?> arg0) { }
         });
+
+
     }
 
     @Override
@@ -142,7 +147,6 @@ public class MainActivity extends AppCompatActivity {
                 sortOrder               // The sort order
         );
 
-
         while (cursor.moveToNext()) {
             SolarSystem m =  new SolarSystem(
                     cursor.getString(cursor.getColumnIndexOrThrow(SolarSystemReaderContract.SpaceobjEntry.COLUMN_NAME)),
@@ -167,7 +171,7 @@ public class MainActivity extends AppCompatActivity {
             HttpURLConnection urlConnection = null;
             BufferedReader reader = null;
 
-            String jsonStr = null;
+            String jsonStr;
 
             try {
                 URL url = new URL("https://wwwlab.iit.his.se/brom/kurser/mobilprog/dbservice/admin/getdataasjson.php?type=a18eliek");
@@ -270,6 +274,8 @@ public class MainActivity extends AppCompatActivity {
                     myIntent.putExtra(SPACEOBJ_RADIUS, list.get(position).getRadius());
                     myIntent.putExtra(SPACEOBJ_CATEGORY, list.get(position).getCategory());
                     myIntent.putExtra(SPACEOBJ_PARENT, list.get(position).getParent());
+
+                    Log.e("getparent", list.get(position).getParent());
                     myIntent.putExtra(SPACEOBJ_AUXDATA, list.get(position).getAuxdata());
                     startActivity(myIntent);
                 }

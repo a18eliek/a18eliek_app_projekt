@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent">
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
@@ -13,11 +15,15 @@
 
         <android.support.v7.widget.CardView
             android:layout_width="344dp"
-            android:layout_height="374dp"
+            android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginTop="10dp"
             tools:layout_editor_absoluteX="8dp"
-            tools:layout_editor_absoluteY="7dp" >
+            tools:layout_editor_absoluteY="7dp"
+            android:elevation="8dp"
+            card_view:cardElevation="10dp"
+            card_view:cardPreventCornerOverlap="false">
+
             <ImageView
                 android:id="@+id/SpaceobjImageView"
                 android:layout_width="344dp"
@@ -50,24 +56,31 @@
                 android:layout_height="wrap_content"
                 android:textSize="14dp" />
 
-            <LinearLayout android:layout_width="wrap_content"
-                android:layout_height="140dp"
-                android:orientation="horizontal"
-                android:layout_marginTop="300dp"
-                android:padding="16dp">
+            <TextView
+                android:id="@+id/SPACEOBJ_LICENCE"
+                android:layout_marginTop="272dp"
+                android:padding="16dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="14dp" />
 
-                <Button
-                    android:id="@+id/SPACEOBJ_LINK"
-                    android:layout_width="wrap_content"
-                    android:layout_height="36dp"
-                    android:elevation="0dp"
-                    android:minWidth="64dp"
-                    android:onClick="openSpaceobjLink"
-                    android:text="Mer information >"
-                    android:textAlignment="center"
-                    android:textSize="14dp" />
-            </LinearLayout>
 
         </android.support.v7.widget.CardView>
+
+
+        <RelativeLayout
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/rvAnimals"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"/>
+
+        </RelativeLayout>
+
     </LinearLayout>
+
+
 </ScrollView>

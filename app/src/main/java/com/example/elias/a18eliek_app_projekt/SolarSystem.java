@@ -6,12 +6,12 @@ import java.text.NumberFormat;
 import java.util.Locale;
 
 public class SolarSystem {
+    private String parent;
     //Member variabels
     private String name;
     private String distance;
     private int radius;
     private String auxdata;
-    private String parent;
     private String category;
 
     //Constructor(s)
