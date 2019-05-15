@@ -2,14 +2,12 @@ package com.example.elias.a18eliek_app_projekt;
 
 import android.content.ContentValues;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.graphics.Color;
 import android.os.AsyncTask;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -35,15 +33,24 @@ public class MainActivity extends AppCompatActivity {
     public static ArrayList<SolarSystem> list = new ArrayList<>();
     public String Selected;
     public static final String SPACEOBJ_NAME = "SPACEOBJ_NAME", SPACEOBJ_DISTANCE = "SPACEOBJ_DISTANCE", SPACEOBJ_RADIUS = "SPACEOBJ_RADIUS",  SPACEOBJ_CATEGORY = "SPACEOBJ_CATEGORY",  SPACEOBJ_PARENT = "SPACEOBJ_PARENT", SPACEOBJ_AUXDATA = "SPACEOBJ_AUXDATA";
-    
+    private final String SELECTED_KEY = "KEY";
+    private SharedPreferences mPreferences;
+    private String sharedPrefFile = "com.example.elias.a18eliek_app_projekt";
+    private int selectedPosition = 0;
+
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(final Bundle savedInstanceState) {
+        mPreferences = getSharedPreferences(sharedPrefFile, MODE_PRIVATE);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        selectedPosition = mPreferences.getInt(SELECTED_KEY, 0);
 
         new FetchData().execute(); //Starta utplock av json-data
 
         Spinner spinner = findViewById(R.id.spinner);
+
+        spinner.setSelection(selectedPosition);
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> arg0, View arg1, int pos, long arg3) {
@@ -53,6 +60,8 @@ public class MainActivity extends AppCompatActivity {
                 ListView listView = findViewById(R.id.my_listview);
                 listView.setAdapter(solarSystemAdapter);
 
+                selectedPosition = pos;
+
                 Log.e("brom", Selected);
 
             }
@@ -60,8 +69,14 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onNothingSelected(AdapterView<?> arg0) { }
         });
+    }
 
-
+    @Override
+    protected void onPause(){
+        super.onPause();
+        SharedPreferences.Editor preferencesEditor = mPreferences.edit();
+        preferencesEditor.putInt(SELECTED_KEY, selectedPosition);
+        preferencesEditor.apply();
     }
 
     @Override
@@ -241,8 +256,6 @@ public class MainActivity extends AppCompatActivity {
                         values.put(SolarSystemReaderContract.SpaceobjEntry.COLUMN_CATEGORY, object.getString("category"));
                         values.put(SolarSystemReaderContract.SpaceobjEntry.COLUMN_AUXDATA, object.getString("auxdata"));
                         db.insert(SolarSystemReaderContract.SpaceobjEntry.TABLE_NAME, null, values);
-
-                        //TODO: Pass Moons to plantes so that we can group them..
 
                         Log.e("brom","SolarSystemReaderContract:"+values);
                     }
