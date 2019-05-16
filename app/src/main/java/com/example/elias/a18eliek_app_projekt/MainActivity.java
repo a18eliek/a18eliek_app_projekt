@@ -32,6 +32,7 @@ import java.util.ArrayList;
  * TODO:
  * Skapa en about sida för info om appen
  * Tema inställning? Dark/Nightmode
+ * Sharedpref för sort knappen, skapar problem... hjälp?
  */
 
 public class MainActivity extends AppCompatActivity {
@@ -41,7 +42,7 @@ public class MainActivity extends AppCompatActivity {
     public static final String SPACEOBJ_NAME = "SPACEOBJ_NAME", SPACEOBJ_DISTANCE = "SPACEOBJ_DISTANCE", SPACEOBJ_RADIUS = "SPACEOBJ_RADIUS",  SPACEOBJ_CATEGORY = "SPACEOBJ_CATEGORY",  SPACEOBJ_PARENT = "SPACEOBJ_PARENT", SPACEOBJ_AUXDATA = "SPACEOBJ_AUXDATA";
     private final String SELECTED_KEY = "KEY";
     private SharedPreferences mPreferences;
-    private String sharedPrefFile = "com.example.elias.a18eliek_app_projekt";
+    private String sharedPrefFile = "com.example.elias.a18eliek_app_projekt_sharedPrefFile_1";
     private int selectedPosition = 0;
 
     @Override
@@ -52,7 +53,9 @@ public class MainActivity extends AppCompatActivity {
 
         selectedPosition = mPreferences.getInt(SELECTED_KEY, 0);
 
-        new FetchData().execute(); //Starta utplock av json-data
+        if(list.isEmpty()) {
+            new FetchData().execute(); //Starta utplock av json-data
+        }
 
         Spinner spinner = findViewById(R.id.spinner);
 
@@ -62,9 +65,7 @@ public class MainActivity extends AppCompatActivity {
             public void onItemSelected(AdapterView<?> arg0, View arg1, int pos, long arg3) {
                 Selected = arg0.getSelectedItem().toString();
 
-                SolarSystemAdapter solarSystemAdapter = new SolarSystemAdapter(getApplicationContext(), printFromDB());
-                ListView listView = findViewById(R.id.my_listview);
-                listView.setAdapter(solarSystemAdapter);
+                displayListView(false);
 
                 selectedPosition = pos;
 
@@ -90,11 +91,40 @@ public class MainActivity extends AppCompatActivity {
 
                 sortDirection = b.getText().toString();
 
-                SolarSystemAdapter solarSystemAdapter = new SolarSystemAdapter(getApplicationContext(), printFromDB());
-                ListView listView = findViewById(R.id.my_listview);
-                listView.setAdapter(solarSystemAdapter);
+                displayListView(false);
+
+                Log.e("button", sortDirection);
             }
         });
+
+        displayListView(true);
+
+    }
+
+    void displayListView(boolean enableOnItemClickListner) {
+        //Skicka info till vår SolarSystemAdapter
+        SolarSystemAdapter solarSystemAdapter = new SolarSystemAdapter(getApplicationContext(), printFromDB());
+        ListView listView = findViewById(R.id.my_listview);
+        listView.setAdapter(solarSystemAdapter);
+
+        if(enableOnItemClickListner) {
+            //Skicka all information vid klick till vår intent
+            listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                    Intent myIntent = new Intent(view.getContext(), SolarSystemDetailsActivity.class);
+                    myIntent.putExtra(SPACEOBJ_NAME, list.get(position).toString());
+                    myIntent.putExtra(SPACEOBJ_DISTANCE, list.get(position).getDistance());
+                    myIntent.putExtra(SPACEOBJ_RADIUS, list.get(position).getRadius());
+                    myIntent.putExtra(SPACEOBJ_CATEGORY, list.get(position).getCategory());
+                    myIntent.putExtra(SPACEOBJ_PARENT, list.get(position).getParent());
+
+                    Log.e("getparent", list.get(position).getParent());
+                    myIntent.putExtra(SPACEOBJ_AUXDATA, list.get(position).getAuxdata());
+                    startActivity(myIntent);
+                }
+            });
+        }
     }
 
     @Override
@@ -296,35 +326,7 @@ public class MainActivity extends AppCompatActivity {
                 Log.e("brom","E:"+e.getMessage());
             }
 
-            //Skicka info till vår SolarSystemAdapter
-            SolarSystemAdapter solarSystemAdapter = new SolarSystemAdapter(getApplicationContext(), printFromDB());
-            ListView listView = findViewById(R.id.my_listview);
-            listView.setAdapter(solarSystemAdapter);
-
-            //Lägger in en Toast vid klick på ett objekt namn.
-            listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                @Override
-                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                    Toast.makeText(getApplicationContext(), list.get(position).info(), Toast.LENGTH_SHORT).show();
-                }
-            });
-
-            //Skicka all information vid klick till vår intent
-            listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                @Override
-                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                    Intent myIntent = new Intent(view.getContext(), SolarSystemDetailsActivity.class);
-                    myIntent.putExtra(SPACEOBJ_NAME, list.get(position).toString());
-                    myIntent.putExtra(SPACEOBJ_DISTANCE, list.get(position).getDistance());
-                    myIntent.putExtra(SPACEOBJ_RADIUS, list.get(position).getRadius());
-                    myIntent.putExtra(SPACEOBJ_CATEGORY, list.get(position).getCategory());
-                    myIntent.putExtra(SPACEOBJ_PARENT, list.get(position).getParent());
-
-                    Log.e("getparent", list.get(position).getParent());
-                    myIntent.putExtra(SPACEOBJ_AUXDATA, list.get(position).getAuxdata());
-                    startActivity(myIntent);
-                }
-            });
+            displayListView(false);
 
         }
     }
