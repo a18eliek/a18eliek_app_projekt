@@ -8,4 +8,8 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <style name="ss_theme" parent="Theme.AppCompat" >
+        <item name="android:colorForeground">@color/foreground_material_dark_3</item>
+    </style>
+
 </resources>
