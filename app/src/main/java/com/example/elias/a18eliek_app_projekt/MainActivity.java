@@ -145,16 +145,24 @@ public class MainActivity extends AppCompatActivity {
         } else if("Show Only Moons".equalsIgnoreCase(Selected)) {
             whereClause = SolarSystemReaderContract.SpaceobjEntry.COLUMN_CATEGORY+"=?";
             whereArgs = new String[]{"Moon"};
+        } else if("Show Only Kuiper Belt Objects".equalsIgnoreCase(Selected)) {
+            whereClause = SolarSystemReaderContract.SpaceobjEntry.COLUMN_CATEGORY+"=?";
+            whereArgs = new String[]{"Kuiper belt object"};
+        } else if("Show Only Asteroids".equalsIgnoreCase(Selected)) {
+            whereClause = SolarSystemReaderContract.SpaceobjEntry.COLUMN_CATEGORY+"=?";
+            whereArgs = new String[]{"belt asteroid"};
+        } else if("Show Only Comets".equalsIgnoreCase(Selected)) {
+            whereClause = SolarSystemReaderContract.SpaceobjEntry.COLUMN_CATEGORY+"=?";
+            whereArgs = new String[]{"comet"};
         } else if("Closest to the Sun".equalsIgnoreCase(Selected)) {
-            whereClause = SolarSystemReaderContract.SpaceobjEntry.COLUMN_CATEGORY+"=?";
+            whereClause = SolarSystemReaderContract.SpaceobjEntry.COLUMN_CATEGORY+"=? OR " + SolarSystemReaderContract.SpaceobjEntry.COLUMN_CATEGORY+"=? OR " + SolarSystemReaderContract.SpaceobjEntry.COLUMN_CATEGORY+"=? OR " + SolarSystemReaderContract.SpaceobjEntry.COLUMN_CATEGORY+"=?";
             sortOrder += SolarSystemReaderContract.SpaceobjEntry.COLUMN_DISTANCE + " ASC";
-            whereArgs = new String[]{"Planet"};
+            whereArgs = new String[]{"Planet", "Kuiper belt object", "belt asteroid", "comet"};
         } else if("Furthest away from the Sun".equalsIgnoreCase(Selected)) {
-            whereClause = SolarSystemReaderContract.SpaceobjEntry.COLUMN_CATEGORY+"=?";
+            whereClause = SolarSystemReaderContract.SpaceobjEntry.COLUMN_CATEGORY+"=? OR " + SolarSystemReaderContract.SpaceobjEntry.COLUMN_CATEGORY+"=? OR " + SolarSystemReaderContract.SpaceobjEntry.COLUMN_CATEGORY+"=? OR " + SolarSystemReaderContract.SpaceobjEntry.COLUMN_CATEGORY+"=?";
             sortOrder = SolarSystemReaderContract.SpaceobjEntry.COLUMN_DISTANCE + " DESC";
-            whereArgs = new String[]{"Planet"};
+            whereArgs = new String[]{"Planet", "Kuiper belt object", "belt asteroid", "comet"};
         }
-
 
         Cursor cursor = db.query(
                 SolarSystemReaderContract.SpaceobjEntry.TABLE_NAME,   // The table to query

@@ -5,6 +5,9 @@
         <item>Name Z-A</item>
         <item>Show Only Planets</item>
         <item>Show Only Moons</item>
+        <item>Show Only Kuiper Belt Objects</item>
+        <item>Show Only Asteroids</item>
+        <item>Show Only Comets</item>
         <item>Closest to the Sun</item>
         <item>Furthest away from the Sun</item>
     </string-array>
