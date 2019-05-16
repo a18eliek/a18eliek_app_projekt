@@ -4,13 +4,27 @@
     android:orientation="vertical"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <Spinner
-        android:id="@+id/spinner"
-        android:textSize="20sp"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:entries="@array/sort_arrays"
-        android:prompt="@string/sort_prompt" />
+        android:layout_height="37dp"
+        android:orientation="horizontal">
+
+        <Spinner
+            android:id="@+id/spinner"
+            android:layout_width="650dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:entries="@array/sort_arrays"
+            android:prompt="@string/sort_prompt"
+            android:textSize="20sp" />
+
+        <Button
+            android:id="@+id/sort_option"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="DESC" />
+    </LinearLayout>
 
     <View
         android:layout_width="match_parent"

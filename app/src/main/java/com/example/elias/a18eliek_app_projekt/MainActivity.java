@@ -13,6 +13,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.Toast;
@@ -36,6 +37,7 @@ import java.util.ArrayList;
 public class MainActivity extends AppCompatActivity {
     public static ArrayList<SolarSystem> list = new ArrayList<>();
     public String Selected;
+    public String sortDirection = "DESC";
     public static final String SPACEOBJ_NAME = "SPACEOBJ_NAME", SPACEOBJ_DISTANCE = "SPACEOBJ_DISTANCE", SPACEOBJ_RADIUS = "SPACEOBJ_RADIUS",  SPACEOBJ_CATEGORY = "SPACEOBJ_CATEGORY",  SPACEOBJ_PARENT = "SPACEOBJ_PARENT", SPACEOBJ_AUXDATA = "SPACEOBJ_AUXDATA";
     private final String SELECTED_KEY = "KEY";
     private SharedPreferences mPreferences;
@@ -72,6 +74,26 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onNothingSelected(AdapterView<?> arg0) { }
+        });
+
+        final Button button = findViewById(R.id.sort_option);
+        button.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                Button b = (Button)v;
+                String buttonText = b.getText().toString();
+
+                if("DESC".equalsIgnoreCase(buttonText)) {
+                    b.setText("ASC");
+                } else if("ASC".equalsIgnoreCase(buttonText)) {
+                    b.setText("DESC");
+                }
+
+                sortDirection = b.getText().toString();
+
+                SolarSystemAdapter solarSystemAdapter = new SolarSystemAdapter(getApplicationContext(), printFromDB());
+                ListView listView = findViewById(R.id.my_listview);
+                listView.setAdapter(solarSystemAdapter);
+            }
         });
     }
 
@@ -114,8 +136,6 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-
-
     public ArrayList<SolarSystem> printFromDB() {
         list.clear();
         SolarSystemReaderDbHelper dbHelper = new SolarSystemReaderDbHelper(getApplicationContext());
@@ -135,32 +155,32 @@ public class MainActivity extends AppCompatActivity {
         String whereClause = null;
         String [] whereArgs = null;
 
-        if("Name A-Z".equalsIgnoreCase(Selected)) {
-            sortOrder = SolarSystemReaderContract.SpaceobjEntry.COLUMN_NAME + " ASC";
-        } else if("Name Z-A".equalsIgnoreCase(Selected)) {
-            sortOrder = SolarSystemReaderContract.SpaceobjEntry.COLUMN_NAME + " DESC";
+
+        if("Name".equalsIgnoreCase(Selected)) {
+            sortOrder = SolarSystemReaderContract.SpaceobjEntry.COLUMN_NAME + " " + sortDirection;
         } else if("Show Only Planets".equalsIgnoreCase(Selected)) {
+            sortOrder = SolarSystemReaderContract.SpaceobjEntry.COLUMN_NAME + " " + sortDirection;
             whereClause = SolarSystemReaderContract.SpaceobjEntry.COLUMN_CATEGORY+"=?";
             whereArgs = new String[]{"Planet"};
         } else if("Show Only Moons".equalsIgnoreCase(Selected)) {
+            sortOrder = SolarSystemReaderContract.SpaceobjEntry.COLUMN_NAME + " " + sortDirection;
             whereClause = SolarSystemReaderContract.SpaceobjEntry.COLUMN_CATEGORY+"=?";
             whereArgs = new String[]{"Moon"};
         } else if("Show Only Kuiper Belt Objects".equalsIgnoreCase(Selected)) {
+            sortOrder = SolarSystemReaderContract.SpaceobjEntry.COLUMN_NAME + " " + sortDirection;
             whereClause = SolarSystemReaderContract.SpaceobjEntry.COLUMN_CATEGORY+"=?";
             whereArgs = new String[]{"Kuiper belt object"};
         } else if("Show Only Asteroids".equalsIgnoreCase(Selected)) {
+            sortOrder = SolarSystemReaderContract.SpaceobjEntry.COLUMN_NAME + " " + sortDirection;
             whereClause = SolarSystemReaderContract.SpaceobjEntry.COLUMN_CATEGORY+"=?";
             whereArgs = new String[]{"belt asteroid"};
         } else if("Show Only Comets".equalsIgnoreCase(Selected)) {
+            sortOrder = SolarSystemReaderContract.SpaceobjEntry.COLUMN_NAME + " " + sortDirection;
             whereClause = SolarSystemReaderContract.SpaceobjEntry.COLUMN_CATEGORY+"=?";
             whereArgs = new String[]{"comet"};
-        } else if("Closest to the Sun".equalsIgnoreCase(Selected)) {
+        } else if("Distance from the Sun".equalsIgnoreCase(Selected)) {
             whereClause = SolarSystemReaderContract.SpaceobjEntry.COLUMN_CATEGORY+"=? OR " + SolarSystemReaderContract.SpaceobjEntry.COLUMN_CATEGORY+"=? OR " + SolarSystemReaderContract.SpaceobjEntry.COLUMN_CATEGORY+"=? OR " + SolarSystemReaderContract.SpaceobjEntry.COLUMN_CATEGORY+"=?";
-            sortOrder += SolarSystemReaderContract.SpaceobjEntry.COLUMN_DISTANCE + " ASC";
-            whereArgs = new String[]{"Planet", "Kuiper belt object", "belt asteroid", "comet"};
-        } else if("Furthest away from the Sun".equalsIgnoreCase(Selected)) {
-            whereClause = SolarSystemReaderContract.SpaceobjEntry.COLUMN_CATEGORY+"=? OR " + SolarSystemReaderContract.SpaceobjEntry.COLUMN_CATEGORY+"=? OR " + SolarSystemReaderContract.SpaceobjEntry.COLUMN_CATEGORY+"=? OR " + SolarSystemReaderContract.SpaceobjEntry.COLUMN_CATEGORY+"=?";
-            sortOrder = SolarSystemReaderContract.SpaceobjEntry.COLUMN_DISTANCE + " DESC";
+            sortOrder += SolarSystemReaderContract.SpaceobjEntry.COLUMN_DISTANCE + " " + sortDirection;
             whereArgs = new String[]{"Planet", "Kuiper belt object", "belt asteroid", "comet"};
         }
 

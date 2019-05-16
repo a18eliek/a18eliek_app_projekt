@@ -1,14 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string-array name="sort_arrays">
-        <item>Name A-Z</item>
-        <item>Name Z-A</item>
+        <item>Name</item>
         <item>Show Only Planets</item>
         <item>Show Only Moons</item>
         <item>Show Only Kuiper Belt Objects</item>
         <item>Show Only Asteroids</item>
         <item>Show Only Comets</item>
-        <item>Closest to the Sun</item>
-        <item>Furthest away from the Sun</item>
+        <item>Distance from the Sun</item>
     </string-array>
 </resources>
