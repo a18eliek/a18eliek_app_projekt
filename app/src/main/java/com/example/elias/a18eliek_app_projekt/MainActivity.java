@@ -27,7 +27,11 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
 
-//TODO: Add everything after Reah from https://en.wikipedia.org/wiki/Solar_System
+/**
+ * TODO:
+ * Skapa en about sida för info om appen
+ * Tema inställning? Dark/Nightmode
+ */
 
 public class MainActivity extends AppCompatActivity {
     public static ArrayList<SolarSystem> list = new ArrayList<>();
@@ -264,12 +268,12 @@ public class MainActivity extends AppCompatActivity {
                 Log.e("brom","E:"+e.getMessage());
             }
 
-            //Skicka bergen till vår SolarSystemAdapter
+            //Skicka info till vår SolarSystemAdapter
             SolarSystemAdapter solarSystemAdapter = new SolarSystemAdapter(getApplicationContext(), printFromDB());
             ListView listView = findViewById(R.id.my_listview);
             listView.setAdapter(solarSystemAdapter);
 
-            //Lägger in en Toast vid klick på ett berg namn. Plats och namn visas.
+            //Lägger in en Toast vid klick på ett objekt namn.
             listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {

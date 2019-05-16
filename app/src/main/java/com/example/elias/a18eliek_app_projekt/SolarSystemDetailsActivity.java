@@ -18,6 +18,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+import com.bumptech.glide.Glide;
 import org.json.JSONException;
 import java.util.ArrayList;
 import static com.example.elias.a18eliek_app_projekt.SolarSystem.getFormattedNumber;
@@ -100,7 +101,9 @@ public class SolarSystemDetailsActivity extends AppCompatActivity implements Moo
         URL = spaceobjURL;
 
         //Visa bild
-        new SolarSystemAdapter.DownloadImageTask((ImageView) findViewById(R.id.SpaceobjImageView)).execute(spaceobjIMG);
+        ImageView imageView = findViewById(R.id.SpaceobjImageView);
+        Glide.with(getApplicationContext()).load(spaceobjIMG).into(imageView);
+
 
         //Hantera månar
         if(spaceobjParent != "") {

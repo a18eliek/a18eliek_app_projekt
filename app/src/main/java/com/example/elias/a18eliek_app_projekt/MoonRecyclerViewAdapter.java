@@ -8,12 +8,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import com.bumptech.glide.Glide;
 import org.json.JSONException;
 import java.util.ArrayList;
 import java.util.List;
 
 public class MoonRecyclerViewAdapter extends RecyclerView.Adapter<MoonRecyclerViewAdapter.ViewHolder> {
 
+    private Context mContext;
     private ArrayList<String> mMoonAuxData;
     private List<String> mMoonName;
     private List<String> mMoonDistance;
@@ -23,6 +25,7 @@ public class MoonRecyclerViewAdapter extends RecyclerView.Adapter<MoonRecyclerVi
 
     // data is passed into the constructor
     MoonRecyclerViewAdapter(Context context, ArrayList<String> auxdata, List<String> name, List<String> distance) {
+        this.mContext = context;
         this.mInflater = LayoutInflater.from(context);
         this.mMoonAuxData = auxdata;
         this.mMoonName = name;
@@ -52,7 +55,7 @@ public class MoonRecyclerViewAdapter extends RecyclerView.Adapter<MoonRecyclerVi
         String moonName = mMoonName.get(position);
         String moonDistance = mMoonDistance.get(position);
 
-        new SolarSystemAdapter.DownloadImageTask(holder.moonImageView).execute(moonImg);
+        Glide.with(mContext).load(moonImg).into(holder.moonImageView);
 
         holder.moonTextView.setText(moonName);
         holder.moonDistanceTextView.setText("Orbit Distance: " + moonDistance + "km.");
