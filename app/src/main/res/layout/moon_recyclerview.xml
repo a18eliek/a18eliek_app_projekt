@@ -28,7 +28,7 @@
         android:id="@+id/moonName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="20sp"
+        android:textSize="18sp"
         android:paddingLeft="2dp"
         android:gravity="start"
         android:textAlignment="viewStart"
