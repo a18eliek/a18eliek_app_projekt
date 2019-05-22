@@ -4,5 +4,7 @@
     <string name="sort_prompt">Sort</string>
     <string name="refresh">Fetch Objects</string>
     <string name="drop_db">Drop database</string>
+    <string name="about_app">Information</string>
     <string name="title_activity_solarsystem_details">Solar System Details</string>
+    <string name="title_activity_info">InfoActivity</string>
 </resources>
