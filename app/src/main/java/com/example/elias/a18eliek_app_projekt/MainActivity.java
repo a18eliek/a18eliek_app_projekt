@@ -28,13 +28,6 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
 
-/**
- * TODO:
- * Skapa en about sida för info om appen
- * Tema inställning? Dark/Nightmode
- * Sharedpref för sort knappen, skapar problem... hjälp?
- */
-
 public class MainActivity extends AppCompatActivity {
     public static ArrayList<SolarSystem> list = new ArrayList<>();
     public String Selected;
